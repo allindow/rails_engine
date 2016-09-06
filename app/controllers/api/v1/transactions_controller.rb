@@ -1,4 +1,4 @@
-class Api::V1::TransactionsController < ApplicationController
+class Api::V1::TransactionsController < Api::V1::BaseController
 
   def index
     @transactions = Transaction.all
