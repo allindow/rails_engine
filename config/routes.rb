@@ -5,6 +5,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       get '/items/find', to: "items/search#show"
       get '/items/find_all', to: "items/search#index"
+      get '/invoices/find', to: "invoices/search#show"
+      get '/invoices/find_all', to: "invoices/search#index"
+      get '/invoice_items/find', to: "invoice_items/search#show"
+      get '/invoice_items/find_all', to: "invoice_items/search#index"
 
       resources :items, only: [:index, :show]
       resources :invoices, only: [:index, :show]
