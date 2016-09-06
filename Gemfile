@@ -10,6 +10,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'pry-rails'
+gem 'responders'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -19,9 +20,12 @@ group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'pry'
-   gem 'shoulda-matchers'
+  gem 'shoulda-matchers'
 end
 
+group :test do
+  gem 'simplecov', require: false
+end
 group :development do
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
