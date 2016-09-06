@@ -10,28 +10,49 @@ task :import => [:environment] do
   merchants     = "data/merchants.csv"
   transactions  = "data/transactions.csv"
 
+  def cents_to_dollars(input)
+    input.insert(-3, ".")
+  end
+
   CSV.foreach(customers, headers: true) do |row|
-    Customer.create!(row.to_hash)
+    customer = Customer.create!(row.to_hash)
+    puts "Created Customer #{customer.id}"
   end
 
   CSV.foreach(merchants, headers: true) do |row|
-    Merchant.create!(row.to_hash)
+    merchant = Merchant.create!(row.to_hash)
+    puts "Created Merchant #{merchant.id}"
   end
 
   CSV.foreach(items, headers: true) do |row|
-    Item.create!(row.to_hash)
+    item = Item.create!(id: row["id"],
+      name: row["name"],
+      description: row["description"],
+      unit_price: cents_to_dollars(row["unit_price"]),
+      merchant_id: row["merchant_id"],
+      created_at: row["created_at"],
+      updated_at: row["updated_at"])
+    puts "Created Item #{item.id}"
   end
 
   CSV.foreach(invoices, headers: true) do |row|
-    Invoice.create!(row.to_hash)
+    invoice = Invoice.create!(row.to_hash)
+    puts "Created Invoice #{invoice.id}"
   end
 
   CSV.foreach(transactions, headers: true) do |row|
-    Transaction.create!(row.to_hash)
+    trans = Transaction.create!(row.to_hash)
+    puts "Created Transaction #{trans.id}"
   end
 
   CSV.foreach(invoice_items, headers: true) do |row|
-    InvoiceItem.create!(row.to_hash)
+    ii = InvoiceItem.create!(item_id: row["item_id"],
+      invoice_id: row["invoice_id"],
+      quantity: row["quantity"],
+      unit_price: cents_to_dollars(row["unit_price"]),
+      created_at: row["created_at"],
+      updated_at: row["updated_at"])
+    puts "Created Invoice Item #{ii.id}"
   end
 
 end
