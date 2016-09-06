@@ -33,4 +33,5 @@ task :import => [:environment] do
   CSV.foreach(invoice_items, headers: true) do |row|
     InvoiceItem.create!(row.to_hash)
   end
+
 end
