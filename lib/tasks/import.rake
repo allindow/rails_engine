@@ -41,8 +41,13 @@ task :import => [:environment] do
   end
 
   CSV.foreach(transactions, headers: true) do |row|
-    trans = Transaction.create!(row.to_hash)
-    puts "Created Transaction #{trans.id}"
+    cct = Transaction.create!(invoice_id: row["invoice_id"],
+    credit_card_number: row["credit_card_number"],
+    result: row["result"],
+    created_at: row["created_at"],
+    updated_at: row["updated_at"]
+    )
+    puts "Created Transaction #{cct.id}"
   end
 
   CSV.foreach(invoice_items, headers: true) do |row|
