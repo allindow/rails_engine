@@ -28,8 +28,16 @@ Rails.application.routes.draw do
         get 'most_revenue', on: :collection, to: "merchants/most_revenue#index"
       end
 
-      resources :customers, only: [:index, :show]
-      resources :transactions, only: [:index, :show]
+      resources :customers, only: [:index, :show] do
+        get 'find', on: :collection, to: "customers/search#show"
+        get 'find_all', on: :collection, to: "customers/search#index"
+        get 'random', on: :collection, to: "customers/random#show"
+      end
+      resources :transactions, only: [:index, :show] do
+        get 'find', on: :collection, to: "transactions/search#show"
+        get 'find_all', on: :collection, to: "transactions/search#index"
+        get 'random', on: :collection, to: "transactions/random#show"
+      end
     end
   end
 end
