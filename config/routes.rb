@@ -7,18 +7,27 @@ Rails.application.routes.draw do
         get 'find', on: :collection, to: "items/search#show"
         get 'find_all', on: :collection, to: "items/search#index"
         get 'random', on: :collection, to: "items/random#show"
+        get 'invoice_items', to: 'items/invoice_items#index'
+        get 'merchant', to: 'items/merchants#show'
       end
 
       resources :invoices, only: [:index, :show] do
         get 'find', on: :collection, to: "invoices/search#show"
         get 'find_all', on: :collection, to: "invoices/search#index"
         get 'random', on: :collection, to: "invoices/random#show"
+        get 'transactions', to: 'invoices/transactions#index'
+        get 'invoice_items', to: 'invoices/invoice_items#index'
+        get 'items', to: 'invoices/items#index'
+        get 'customer', to: 'invoices/customers#show'
+        get 'merchant', to: 'invoices/merchants#show'
       end
 
       resources :invoice_items, only: [:index, :show] do
         get 'find', on: :collection, to: "invoice_items/search#show"
         get 'find_all', on: :collection, to: "invoice_items/search#index"
         get 'random', on: :collection, to: "invoice_items/random#show"
+        get 'invoice', to: 'invoice_items/invoices#show'
+        get 'item', to: 'invoice_items/items#show'
       end
 
       resources :merchants, only: [:index, :show] do
