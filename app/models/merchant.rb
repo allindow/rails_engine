@@ -13,10 +13,9 @@ class Merchant < ApplicationRecord
   end
 
   def pending_customers
-    customers.find(self.
-    invoices.includes(:transactions)
-    .references(:transactions)
-    .where.not(transactions: { result: "success" })
-    .pluck(:customer_id))
+    customers.joins(:invoices)
+    .joins("INNER JOIN transactions ON transactions.invoice_id=invoices.id")
+    .merge(Transaction.failed)
+    .distinct
   end
 end
