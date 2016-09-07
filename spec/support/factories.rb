@@ -28,6 +28,13 @@ FactoryGirl.define do
     unit_price
   end
 
+  factory :transaction do
+    invoice
+    credit_card_number "000-000-000-000"
+    credit_card_expiration_date ""
+    result "success"
+  end
+
   sequence :first_name do |n|
     "FirstName #{n}"
   end
