@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         get 'random', on: :collection, to: "merchants/random#show"
         get 'most_revenue', on: :collection, to: "merchants/most_revenue#index"
         get 'customers_with_pending_invoices', on: :member, to: "merchants/pending_customers#index"
+        get 'revenue', to: "merchants/revenue#show"
 
       end
 
