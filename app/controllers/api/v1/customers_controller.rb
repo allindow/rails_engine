@@ -1,13 +1,9 @@
 class Api::V1::CustomersController < Api::V1::BaseController
   def index
-    customers = Customer.all
-
-    respond_with customers
+    @customers = Customer.all
   end
 
   def show
-    customer = Customer.find(params[:id])
-
-    respond_with customer
+    @customer = Customer.find(params[:id])
   end
 end

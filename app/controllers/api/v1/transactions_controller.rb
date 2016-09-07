@@ -1,14 +1,10 @@
 class Api::V1::TransactionsController < Api::V1::BaseController
 
   def index
-    transactions = Transaction.all
-
-    respond_with transactions
+    @transactions = Transaction.all
   end
 
   def show
-    transaction = Transaction.find(params[:id])
-
-    respond_with transaction
+    @transaction = Transaction.find(params[:id])
   end
 end
