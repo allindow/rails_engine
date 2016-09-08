@@ -70,4 +70,19 @@ RSpec.describe "Customers requests", type: :request do
     expect(json.count).to eq(2)
   end
 
+  it "should return a customer's favorite merchant" do
+    customer = create(:customer)
+    merchant1, merchant2 = create_list(:merchant, 2)
+    invoice = create(:invoice, merchant: merchant1, customer: customer)
+    invoices_two = create_list(:invoice, 2, merchant: merchant2, customer: customer)
+    create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoices_two.first)
+    create(:transaction, invoice: invoices_two.last)
+
+    get "/api/v1/customers/#{customer.id}/favorite_merchant"
+
+    expect(json["id"]).to eq(merchant2.id)
+    expect(json.count).to eq(4)
+  end
+
 end

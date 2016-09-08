@@ -43,8 +43,8 @@ RSpec.describe "Invoice Requests", type: :request do
 
     expect(response.status).to eq(200)
     expect(json.count).to eq(2)
-    expect(json[0]["description"]).to eq(items[0].description)
-    expect(json[1]["unit_price"]).to eq((items[1].unit_price.to_f).to_s)
+    expect(json.first["description"]).to eq(items[0].description)
+    expect(json.second["unit_price"]).to eq((items[1].unit_price.to_f).to_s)
   end
 
   it "can find the most popular item" do
@@ -65,7 +65,7 @@ RSpec.describe "Invoice Requests", type: :request do
 
     item = Item.most_items(1).first
     expect(response.status).to eq(200)
-    expect(json[0]["id"]).to eq(item_two.id)
+    expect(json.first["id"]).to eq(item_two.id)
   end
 
   it "finds the best day for an item" do
@@ -97,7 +97,7 @@ RSpec.describe "Invoice Requests", type: :request do
     get "/api/v1/items/#{item1.id}/invoice_items"
 
     expect(response.status).to eq(200)
-    expect(json[0]["id"]).to eq(invoice_item1.id)
+    expect(json.first["id"]).to eq(invoice_item1.id)
   end
 
   it "should get a random item" do
@@ -106,8 +106,21 @@ RSpec.describe "Invoice Requests", type: :request do
     get "/api/v1/items/random"
 
     expect(response).to be_success
-
     expect(json.count).to eq(7)
     expect(Item.pluck(:id)).to include(json['id'])
+  end
+
+  it "should return the item with the most revenue" do
+    create_list(:item, 3)
+    item = create(:item)
+    invoice = create(:invoice, merchant_id: item.merchant_id)
+    invoice_item = create(:invoice_item, invoice: invoice, item: item)
+    transaction = create(:transaction, invoice: invoice, result: "success")
+
+    get "/api/v1/items/most_revenue?quantity=1"
+
+    expect(response.status).to eq(200)
+    expect(json.count).to eq(1)
+    expect(json.first["id"]).to eq(item.id)
   end
 end
