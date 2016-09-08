@@ -158,7 +158,7 @@ RSpec.describe "Merchant Requests", type: :request do
     expect(response.status).to eq(200)
     expect(json.count).to eq(1)
     expect(json[0]["name"]).to eq(merchant1.name)
-   end
+  end
 
   it "returns merchant with most items" do
     merchant1, merchant2 = create_list(:merchant, 2)
@@ -177,5 +177,5 @@ RSpec.describe "Merchant Requests", type: :request do
     expect(response.status).to eq(200)
     expect(json.count).to eq(1)
     expect(json[0]["name"]).to eq(merchant1.name)
-   end
+  end
 end
