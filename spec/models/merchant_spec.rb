@@ -30,4 +30,17 @@ RSpec.describe Merchant, type: :model do
 
     expect(merchant.pending_customers).to eq(result)
   end
+
+  it "can get favorite customer for a merchant" do
+    merchant = create(:merchant)
+    cust1 = create(:customer)
+    cust2 = create(:customer)
+    inv1 = create(:invoice, customer_id: cust1.id, merchant_id: merchant.id)
+    inv2 = create(:invoice, customer_id: cust2.id, merchant_id: merchant.id)
+    create(:transaction, invoice_id: inv1.id)
+    create(:transaction, invoice_id: inv1.id)
+    create(:transaction, invoice_id: inv2.id)
+
+    expect(merchant.favorite_customer).to eq(cust1)
+  end
 end
