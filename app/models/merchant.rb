@@ -39,4 +39,11 @@ class Merchant < ApplicationRecord
     .select("customers.*, (transactions.count) as SALES")
     .group('customers.id').order('sales DESC').first
   end
+  
+  def self.most_items(number)
+    Merchant.joins(invoices: [:transactions, :invoice_items])
+    .merge(Transaction.success)
+    .group("merchants.id").
+    order("sum(invoice_items.quantity)").take(number)
+  end
 end
