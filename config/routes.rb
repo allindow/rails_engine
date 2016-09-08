@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         get 'revenue', to: "merchants/revenue#show"
         get 'favorite_customer', on: :member, to: "merchants/favorite_customers#show"
         get 'most_items', on: :collection, to: "merchants/most_items#index"
+        get 'revenue', on: :collection, to: "merchants/revenue#index"
       end
 
       resources :customers, only: [:index, :show] do

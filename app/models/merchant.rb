@@ -34,6 +34,13 @@ class Merchant < ApplicationRecord
     .sum("invoice_items.unit_price * invoice_items.quantity")
   end
 
+  def self.total_revenue_by_date(date)
+    joins(invoices: [:transactions, :invoice_items])
+    .merge(Transaction.success)
+    .where(invoices: {created_at: date})
+    .sum("invoice_items.unit_price * invoice_items.quantity")
+  end
+
   def favorite_customer
     customers.joins(:transactions).merge(Transaction.success)
     .select("customers.*, (transactions.count) as SALES")
