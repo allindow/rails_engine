@@ -38,6 +38,7 @@ Rails.application.routes.draw do
         get 'customers_with_pending_invoices', on: :member, to: "merchants/pending_customers#index"
         get 'items', on: :member, to: "merchants/items#index"
         get 'invoices', on: :member, to: "merchants/invoices#index"
+        get 'revenue', to: "merchants/revenue#show"
       end
 
       resources :customers, only: [:index, :show] do
