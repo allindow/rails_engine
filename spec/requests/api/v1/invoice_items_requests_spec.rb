@@ -1,22 +1,65 @@
-# require 'rails_helper'
-#
-# RSpec.describe Api::V1::CustomersController, type: :request do
-#   it "should get all customers" do
-#     create_list(:item, 2)
-#
-#     get '/api/v1/items'
-#
-#     expect(response).to be_success
-#     expect(json.count).to eq(2)
-#   end
-#
-#   it "should get a single customer by id" do
-#     item = create(:item)
-#
-#     get "/api/v1/items/#{item.id}"
-#
-#     expect(response).to be_success
-#     expect(json['id']).to eq(item.id)
-#     expect(json['name']).to eq(item.name)
-#   end
-# end
+require 'rails_helper'
+
+RSpec.describe "Invoice Item", type: :request do
+  it "it can find invoice items" do
+    invoice_item_one, invoice_item_two = create_list(:invoice_item, 2)
+
+    get "/api/v1/invoice_items"
+
+    expect(json.count).to eq(2)
+    expect(response.status).to eq(200)
+    expect(invoice_item_one.quantity).to eq(json.first["quantity"])
+    expect(invoice_item_one.id).to eq(json.first["id"])
+    expect(invoice_item_two.id).to eq(json.last["id"])
+
+    get "/api/v1/invoice_items/#{invoice_item_one.id}"
+
+    expect(response.status).to eq(200)
+    expect(invoice_item_one.id).to eq(json["id"])
+    expect(invoice_item_one.quantity).to eq(json["quantity"])
+  end
+
+  it 'can find a single item' do
+    invoice = create(:invoice)
+    item = create(:item)
+    invoice_item = InvoiceItem.create(invoice_id: invoice.id, item_id: item.id, unit_price: 1000, quantity: 5)
+
+    get "/api/v1/invoice_items/find?id=#{invoice_item.id}"
+
+    expect(response.status).to eq(200)
+    expect(json["id"]).to eq(invoice_item.id)
+    expect(json["quantity"]).to eq(invoice_item.quantity)
+    expect(json["unit_price"]).to eq(((invoice_item.unit_price).to_f).to_s)
+  end
+
+  it 'sends multiple records when given a find all search' do
+    invoice = create(:invoice)
+    item = create(:item)
+    invoice_item1 = InvoiceItem.create(invoice_id: invoice.id, item_id: item.id, unit_price: 1, quantity: 5)
+    invoice_item2 = InvoiceItem.create(invoice_id: invoice.id, item_id: item.id, unit_price: 1, quantity: 4)
+
+    get "/api/v1/invoice_items/find_all?quantity=4"
+
+    expect(response.status).to eq(200)
+    expect(json.count).to eq(1)
+  end
+
+  it "can return the items for an invoice item" do
+    ii1, ii2 = create_list(:invoice_item, 2)
+
+    get "/api/v1/invoice_items/#{ii2.id}/item"
+
+    expect(response.status).to eq(200)
+    expect(json["id"]).to eq(ii2.item_id)
+    expect(json["id"]).to_not eq(ii1.item_id)
+  end
+
+  it "can return the invoices for invoice items" do
+    invoice_item1, invoice_item2 = create_list(:invoice_item, 2)
+
+    get "/api/v1/invoice_items/#{invoice_item1.id}/invoice"
+
+    expect(response.status).to eq(200)
+    expect(json["id"]).to eq(invoice_item1.invoice_id)
+  end
+end
