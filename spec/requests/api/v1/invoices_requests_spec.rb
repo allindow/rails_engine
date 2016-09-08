@@ -69,18 +69,26 @@ RSpec.describe "Invoice", type: :request do
 
   it "should return an invoice's item" do
     invoice = create(:invoice)
+    item = create(:item)
+    invoice_item1 = InvoiceItem.create(invoice_id: invoice.id, item_id: item.id, unit_price: 1, quantity: 5)
+    invoice_item2 = InvoiceItem.create(invoice_id: invoice.id, item_id: item.id, unit_price: 1, quantity: 4)
 
     get "/api/v1/invoices/#{invoice.id}/items"
 
     expect(response.status).to eq(200)
+    expect(json.count).to eq(2)
   end
 
   it "should return an invoice's item" do
     invoice = create(:invoice)
+    item = create(:item)
+    invoice_item1 = InvoiceItem.create(invoice_id: invoice.id, item_id: item.id, unit_price: 1, quantity: 5)
+    invoice_item2 = InvoiceItem.create(invoice_id: invoice.id, item_id: item.id, unit_price: 1, quantity: 4)
 
     get "/api/v1/invoices/#{invoice.id}/invoice_items"
 
     expect(response.status).to eq(200)
+    expect(json.count).to eq(2)
   end
 
   it "should return an invoice's customer" do
