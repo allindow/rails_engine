@@ -73,13 +73,14 @@ RSpec.describe "Merchant Requests", type: :request do
     expect(json.count).to eq(1)
   end
 
-  # it "can get a random merchant" do
-  #   merchant1 = create(:merchant)
-  #
-  #   get "/api/v1/merchants/random"
-  #
-  #   expect(response.status).to eq(200)
-  # end
+  it "can get a random merchant" do
+    create_list(:merchant, 3)
+
+    get "/api/v1/merchants/random"
+    expect(response.status).to eq(200)
+    expect(json.count).to eq(4)
+    expect(Merchant.pluck(:id)).to include(json['id'])
+  end
 
   it "can get the revnue for merchant" do
     create(:invoice_item)
