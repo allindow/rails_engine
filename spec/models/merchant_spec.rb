@@ -17,6 +17,34 @@ RSpec.describe Merchant, type: :model do
     expect(Merchant.most_revenue(2)).to eq(result)
   end
 
+  it "can get total revenue for a merchant" do
+    invoice_item = create(:invoice_item, unit_price: 1, quantity: 1)
+    invoice = invoice_item.invoice
+    transaction = create(:transaction, invoice: invoice)
+    merchant = invoice.merchant
+
+    expect(1).to eq(Merchant.revenue(merchant.id))
+  end
+
+  it "can return the merchant that has sold the most items" do
+    merchant_one, merchant_two = create_list(:merchant, 2)
+    customer      = create(:customer)
+    invoice_one   = create(:invoice, customer: customer, merchant: merchant_one)
+    invoice_two   = create(:invoice, customer: customer, merchant: merchant_one)
+    invoice_three = create(:invoice, customer: customer, merchant: merchant_one)
+
+    invoice_one.transactions    << create(:transaction)
+    invoice_two.transactions    << create(:transaction)
+    invoice_three.transactions  << create(:transaction)
+    invoice_one.invoice_items   << create(:invoice_item)
+    invoice_two.invoice_items   << create(:invoice_item)
+    invoice_three.invoice_items << create(:invoice_item)
+
+    merchant = Merchant.most_items(1).first
+
+    expect(merchant).to eq(merchant_one)
+  end
+
   it "can get pending customers for merchant" do
     merchant = create(:merchant)
     invoice = create(:invoice, merchant_id: merchant.id)
