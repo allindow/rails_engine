@@ -6,8 +6,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get '/api/v1/merchants'
 
-    json = JSON.parse(response.body)
-
     expect(response).to be_success
     expect(json.count).to eq(2)
   end
@@ -16,8 +14,6 @@ RSpec.describe "Merchant Requests", type: :request do
     create(:merchant, id: 1)
 
     get '/api/v1/merchants/1'
-
-    json = JSON.parse(response.body)
 
     expect(response).to be_success
     expect(json.count).to eq(4)
@@ -37,8 +33,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/#{merchant.id}/favorite_customer"
 
-    json = JSON.parse(response.body)
-
     expect(response).to be_success
     expect(json["first_name"]).to eq(cust1.first_name)
   end
@@ -53,8 +47,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     expect(response.status).to eq(200)
 
-    json = JSON.parse(response.body)
-
     expect(json.first["first_name"]).to eq(customer.first_name)
     expect(json.first["last_name"]).to eq(customer.last_name)
   end
@@ -67,8 +59,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     expect(response.status).to eq(200)
 
-    json = JSON.parse(response.body)
-
     expect(json.count).to eq(1)
   end
 
@@ -79,8 +69,6 @@ RSpec.describe "Merchant Requests", type: :request do
     get "/api/v1/merchants/#{merch1.id}/items"
 
     expect(response.status).to eq(200)
-
-    json = JSON.parse(response.body)
 
     expect(json.count).to eq(1)
   end
