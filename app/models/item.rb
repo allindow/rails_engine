@@ -12,4 +12,12 @@ class Item < ApplicationRecord
     .group("items.id")
     .take(number)
   end
+
+  def self.most_revenue(quantity)
+    select("items.*, SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue")
+    .joins(:transactions, :invoice_items)
+    .merge(Transaction.success)
+    .order("revenue DESC")
+    .group("items.id").take(quantity)
+  end
 end
