@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "Merchant Requests", type: :request do
+  after(:each) do
+    expect(response).to be_success
+  end
+
   it "should get all merchants" do
     create_list(:merchant, 2)
 
     get '/api/v1/merchants'
 
-    expect(response).to be_success
     expect(json.count).to eq(2)
   end
 
@@ -15,7 +18,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get '/api/v1/merchants/1'
 
-    expect(response).to be_success
     expect(json.count).to eq(4)
   end
 
@@ -33,7 +35,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/#{merchant.id}/favorite_customer"
 
-    expect(response).to be_success
     expect(json["first_name"]).to eq(cust1.first_name)
   end
 
@@ -45,8 +46,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/#{merch.id}/customers_with_pending_invoices"
 
-    expect(response.status).to eq(200)
-
     expect(json.first["first_name"]).to eq(customer.first_name)
     expect(json.first["last_name"]).to eq(customer.last_name)
   end
@@ -57,7 +56,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/#{merch1.id}/invoices"
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(1)
   end
 
@@ -67,7 +65,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/#{merch1.id}/items"
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(1)
   end
 
@@ -90,7 +87,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/#{merchant.id}/revenue"
 
-    expect(response.status).to eq(200)
     expect(expected).to eq(json)
   end
 
@@ -104,7 +100,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/#{merchant.id}/revenue?date=#{Time.now}"
 
-    expect(response.status).to eq(200)
     expect(expected).to eq(json)
   end
 
@@ -118,7 +113,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/revenue?date=#{Time.now}"
 
-    expect(response.status).to eq(200)
     expect(expected).to eq(json)
   end
 
@@ -127,7 +121,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/find_all"
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(3)
   end
 
@@ -136,7 +129,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get "/api/v1/merchants/find"
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(4)
   end
 
@@ -154,7 +146,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get '/api/v1/merchants/most_revenue', params: {quantity: 1}
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(1)
     expect(json[0]["name"]).to eq(merchant1.name)
   end
@@ -173,7 +164,6 @@ RSpec.describe "Merchant Requests", type: :request do
 
     get '/api/v1/merchants/most_items', params: {quantity: 1}
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(1)
     expect(json[0]["name"]).to eq(merchant1.name)
   end

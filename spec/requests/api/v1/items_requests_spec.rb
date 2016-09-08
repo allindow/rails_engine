@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "Invoice Requests", type: :request do
+  after(:each) do
+    expect(response).to be_success
+  end
+
   it "it finds all items" do
     item_one, item_two = create_list(:item, 2)
 
     get "/api/v1/items"
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(2)
     expect(item_one.name).to eq(json.first["name"])
     expect(item_one.id).to eq(json.first["id"])
@@ -19,7 +22,6 @@ RSpec.describe "Invoice Requests", type: :request do
 
     get "/api/v1/items/#{item_two.id}"
 
-    expect(response.status).to eq(200)
     expect(item_two.id).to eq(json["id"])
     expect(item_two.name).to eq(json["name"])
   end
@@ -29,7 +31,6 @@ RSpec.describe "Invoice Requests", type: :request do
 
     get "/api/v1/items/find?id=#{item.id}"
 
-    expect(response.status).to eq(200)
     expect(json["id"]).to eq(item.id)
     expect(json["description"]).to eq(item.description)
     expect(json["name"]).to eq(item.name)
@@ -41,7 +42,6 @@ RSpec.describe "Invoice Requests", type: :request do
 
     get "/api/v1/items/find_all?name=angela"
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(2)
     expect(json.first["description"]).to eq(items[0].description)
     expect(json.second["unit_price"]).to eq((items[1].unit_price.to_f).to_s)
@@ -64,7 +64,7 @@ RSpec.describe "Invoice Requests", type: :request do
     get "/api/v1/items/most_items?quantity=1"
 
     item = Item.most_items(1).first
-    expect(response.status).to eq(200)
+
     expect(json.first["id"]).to eq(item_two.id)
   end
 
@@ -76,7 +76,6 @@ RSpec.describe "Invoice Requests", type: :request do
 
     get "/api/v1/items/#{item.id}/best_day"
 
-    expect(response.status).to eq(200)
     expect(json.count).to eq(1)
   end
 
@@ -86,7 +85,6 @@ RSpec.describe "Invoice Requests", type: :request do
 
     get "/api/v1/items/#{item.id}/merchant"
 
-    expect(response.status).to eq(200)
     expect(json["id"]).to eq(item.merchant_id)
   end
 
@@ -96,7 +94,7 @@ RSpec.describe "Invoice Requests", type: :request do
 
     get "/api/v1/items/#{item1.id}/invoice_items"
 
-    expect(response.status).to eq(200)
+
     expect(json.first["id"]).to eq(invoice_item1.id)
   end
 
@@ -105,7 +103,6 @@ RSpec.describe "Invoice Requests", type: :request do
 
     get "/api/v1/items/random"
 
-    expect(response).to be_success
     expect(json.count).to eq(7)
     expect(Item.pluck(:id)).to include(json['id'])
   end
