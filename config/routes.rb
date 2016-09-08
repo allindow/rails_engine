@@ -37,6 +37,7 @@ Rails.application.routes.draw do
         get 'most_revenue', on: :collection, to: "merchants/most_revenue#index"
         get 'customers_with_pending_invoices', on: :member, to: "merchants/pending_customers#index"
         get 'revenue', to: "merchants/revenue#show"
+        get 'most_items', on: :collection, to: "merchants/most_items#index"
 
       end
 
