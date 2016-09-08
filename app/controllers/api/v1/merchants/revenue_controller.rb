@@ -5,10 +5,16 @@ class Api::V1::Merchants::RevenueController < Api::V1::BaseController
   end
 
   def show
-    if params[:date]
-      @revenue = Merchant.revenue_date(params[:merchant_id], params[:date])
-    else
-      @revenue = Merchant.revenue(params[:merchant_id])
-    end
+    @revenue = set_by_param(params)
   end
+
+  private
+    def date?(params)
+      params.include?(:date)
+    end
+
+    def set_by_param(params)
+      date?(params) ? Merchant.revenue_date(params[:merchant_id], params[:date]) \
+                    : Merchant.revenue(params[:merchant_id])
+    end
 end
