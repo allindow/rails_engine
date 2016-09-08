@@ -12,4 +12,13 @@ class Item < ApplicationRecord
     .group("items.id")
     .take(number)
   end
+
+  # def self.best_day(date)
+  #   Item.select("items.*, SUM(invoice_items.quantity) AS most_items")
+  #   .joins(:transactions, :invoice_items)
+  #   .merge(Transaction.success)
+  #   .where(transactions: {created_at: date})
+  #   .order("most_items DESC")
+  #   .group("items.id")
+  # end
 end

@@ -50,6 +50,7 @@ Rails.application.routes.draw do
         get 'random', on: :collection, to: "customers/random#show"
         get 'invoices', on: :member, to: "customers/invoices#index"
         get 'transactions', on: :member, to: "customers/transactions#index"
+        get 'favorite_merchant', to: "customers/favorite_merchants#show"
       end
 
       resources :transactions, only: [:index, :show] do
