@@ -13,12 +13,12 @@ class Item < ApplicationRecord
     .take(number)
   end
 
-  # def self.best_day(date)
-  #   Item.select("items.*, SUM(invoice_items.quantity) AS most_items")
-  #   .joins(:transactions, :invoice_items)
-  #   .merge(Transaction.success)
-  #   .where(transactions: {created_at: date})
-  #   .order("most_items DESC")
-  #   .group("items.id")
-  # end
+  def self.most_revenue(quantity)
+    select("items.*, SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue")
+    .joins(:transactions, :invoice_items)
+    .merge(Transaction.success)
+    .order("revenue DESC")
+    .group("items.id").take(quantity)
+  end
+
 end
