@@ -72,4 +72,110 @@ RSpec.describe "Merchant Requests", type: :request do
 
     expect(json.count).to eq(1)
   end
+
+  # it "can get a random merchant" do
+  #   merchant1 = create(:merchant)
+  #
+  #   get "/api/v1/merchants/random"
+  #
+  #   expect(response.status).to eq(200)
+  # end
+
+  it "can get the revnue for merchant" do
+    create(:invoice_item)
+    ii = create(:invoice_item, unit_price: 100, quantity: 2)
+    invoice = ii.invoice
+    transaction = create(:transaction, invoice: invoice)
+    merchant = invoice.merchant
+    expected = {"revenue"=>"200.0"}
+
+    get "/api/v1/merchants/#{merchant.id}/revenue"
+
+    expect(response.status).to eq(200)
+    expect(expected).to eq(json)
+  end
+
+  it "can get the revnue for merchant" do
+    create(:invoice_item)
+    ii = create(:invoice_item, unit_price: 100, quantity: 2)
+    invoice = ii.invoice
+    transaction = create(:transaction, invoice: invoice)
+    merchant = invoice.merchant
+    expected = {"revenue"=>"0.0"}
+
+    get "/api/v1/merchants/#{merchant.id}/revenue?date=#{Time.now}"
+
+    expect(response.status).to eq(200)
+    expect(expected).to eq(json)
+  end
+
+  it "can get the revenue for all merchants" do
+    create(:invoice_item)
+    ii = create(:invoice_item, unit_price: 100, quantity: 2)
+    invoice = ii.invoice
+    transaction = create(:transaction, invoice: invoice)
+    merchant = invoice.merchant
+    expected = {"total_revenue"=>"0.0"}
+
+    get "/api/v1/merchants/revenue?date=#{Time.now}"
+
+    expect(response.status).to eq(200)
+    expect(expected).to eq(json)
+  end
+
+  it "finds merchants" do
+    merchants = create_list(:merchant, 3)
+
+    get "/api/v1/merchants/find_all"
+
+    expect(response.status).to eq(200)
+    expect(json.count).to eq(3)
+  end
+
+  it "finds an individual merchant" do
+    merchant = create_list(:merchant, 3)
+
+    get "/api/v1/merchants/find"
+
+    expect(response.status).to eq(200)
+    expect(json.count).to eq(4)
+  end
+
+  it "returns top merchants by revenue" do
+    merchant1, merchant2 = create_list(:merchant, 2)
+
+    invoice1 = create(:invoice, merchant: merchant1)
+    invoice2 = create(:invoice, merchant: merchant2)
+
+    transaction1 = create(:transaction, invoice: invoice1, result: "success")
+    invoice_item1 = create(:invoice_item, invoice: invoice1, quantity: 500, unit_price: 1000)
+
+    transaction2 = create(:transaction, invoice: invoice2, result: "success")
+    invoice_item2 = create(:invoice_item, invoice: invoice2, quantity: 2, unit_price: 5)
+
+    get '/api/v1/merchants/most_revenue', params: {quantity: 1}
+
+    expect(response.status).to eq(200)
+    expect(json.count).to eq(1)
+    expect(json[0]["name"]).to eq(merchant1.name)
+   end
+
+  it "returns merchant with most items" do
+    merchant1, merchant2 = create_list(:merchant, 2)
+
+    invoice1 = create(:invoice, merchant: merchant1)
+    invoice2 = create(:invoice, merchant: merchant2)
+
+    transaction1 = create(:transaction, invoice: invoice1, result: "success")
+    invoice_item1 = create(:invoice_item, invoice: invoice1, quantity: 500, unit_price: 1000)
+
+    transaction2 = create(:transaction, invoice: invoice2, result: "success")
+    invoice_item2 = create(:invoice_item, invoice: invoice2, quantity: 2, unit_price: 5)
+
+    get '/api/v1/merchants/most_items', params: {quantity: 1}
+
+    expect(response.status).to eq(200)
+    expect(json.count).to eq(1)
+    expect(json[0]["name"]).to eq(merchant1.name)
+   end
 end
