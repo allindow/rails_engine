@@ -91,4 +91,15 @@ RSpec.describe "Invoice", type: :request do
     expect(response.status).to eq(200)
     expect(json["id"]).to eq(invoice1.customer_id)
   end
+
+  it "should get a random invoice" do
+    create_list(:invoice, 3)
+
+    get "/api/v1/invoices/random"
+
+    expect(response).to be_success
+
+    expect(json.count).to eq(6)
+    expect(Invoice.pluck(:id)).to include(json['id'])
+  end
 end

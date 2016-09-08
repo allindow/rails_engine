@@ -31,7 +31,7 @@ RSpec.describe "Customers requests", type: :request do
   end
 
   it "should get a random customer" do
-    create_list(:customer, 5)
+    create_list(:customer, 3)
 
     get "/api/v1/customers/random"
 
@@ -39,6 +39,7 @@ RSpec.describe "Customers requests", type: :request do
     ##expect the count to be 5 because a customer has 5
     # attributes and this is not an array
     expect(json.count).to eq(5)
+    expect(Customer.pluck(:id)).to include(json['id'])
   end
 
   it "should find all customers that match certain params" do
