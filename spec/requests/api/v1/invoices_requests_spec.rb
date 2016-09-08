@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Invoice Requests", type: :request do
+RSpec.describe "Invoice", type: :request do
   it "it gets all invoices" do
     invoice_one, invoice_two, invoice_three = create_list(:invoice, 3)
 
