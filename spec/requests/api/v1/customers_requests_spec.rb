@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "Customers requests", type: :request do
+  after(:each) do
+    expect(response).to be_success
+  end
+
   it "should get all customers" do
     create_list(:customer, 2)
 
     get '/api/v1/customers'
 
-    expect(response).to be_success
     expect(json.count).to eq(2)
   end
 
@@ -15,7 +18,6 @@ RSpec.describe "Customers requests", type: :request do
 
     get "/api/v1/customers/#{customer.id}"
 
-    expect(response).to be_success
     expect(json['id']).to eq(customer.id)
     expect(json['first_name']).to eq(customer.first_name)
   end
@@ -26,7 +28,6 @@ RSpec.describe "Customers requests", type: :request do
 
     get "/api/v1/customers/#{customer.id}/invoices"
 
-    expect(response).to be_success
     expect(json.count).to eq(2)
   end
 
@@ -35,7 +36,6 @@ RSpec.describe "Customers requests", type: :request do
 
     get "/api/v1/customers/random"
 
-    expect(response).to be_success
     ##expect the count to be 5 because a customer has 5
     # attributes and this is not an array
     expect(json.count).to eq(5)
@@ -46,7 +46,7 @@ RSpec.describe "Customers requests", type: :request do
     2.times { create(:customer, first_name:"Beth") }
 
     get "/api/v1/customers/find_all?first_name=Beth"
-    expect(response).to be_success
+
     expect(json.count).to eq(2)
   end
 
@@ -55,7 +55,7 @@ RSpec.describe "Customers requests", type: :request do
     create(:customer)
 
     get "/api/v1/customers/find?first_name=Beth"
-    expect(response).to be_success
+
     expect(json.count).to eq(5)
   end
 
@@ -66,7 +66,6 @@ RSpec.describe "Customers requests", type: :request do
 
     get "/api/v1/customers/#{customer.id}/transactions"
 
-    expect(response).to be_success
     expect(json.count).to eq(2)
   end
 
