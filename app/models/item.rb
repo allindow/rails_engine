@@ -20,4 +20,5 @@ class Item < ApplicationRecord
     .order("revenue DESC")
     .group("items.id").take(quantity)
   end
+
 end
