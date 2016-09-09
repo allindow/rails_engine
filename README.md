@@ -59,7 +59,7 @@ Run the test suite using Rspec.
 ```
 rspec
 ```
-You can also run the spec harness privded by @turingschool by switching into the spec harness directory from the project root directory
+You can also run the spec harness privded by [Turing School](https://github.com/turingschool) by switching into the spec harness directory from the project root directory
 ```
 cd rales_engine_spec_harness
 ```
@@ -68,4 +68,4 @@ and running
 rake
 ```
 
-### All available endpoints can be found in the routes files or the original project spec for [Rails Engine](https://github.com/turingschool/lesson_plans/blob/master/ruby_03-professional_rails_applications/rails_engine.md)
+### All available endpoints can be found in the routes files or the original project spec for [Rails Engine](https://github.com/turingschool/lesson_plans/blob/master/ruby_03-professional_rails_applications/rails_engine.md).
