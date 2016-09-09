@@ -90,7 +90,7 @@ RSpec.describe "Merchant Requests", type: :request do
     expect(expected).to eq(json)
   end
 
-  it "can get the revnue for merchant" do
+  it "can get the revnue for merchant for a date" do
     create(:invoice_item)
     ii = create(:invoice_item, unit_price: 100, quantity: 2)
     invoice = ii.invoice
@@ -103,7 +103,7 @@ RSpec.describe "Merchant Requests", type: :request do
     expect(expected).to eq(json)
   end
 
-  it "can get the revenue for all merchants" do
+  it "can get the revenue for all merchants on a specific date" do
     create(:invoice_item)
     ii = create(:invoice_item, unit_price: 100, quantity: 2)
     invoice = ii.invoice
