@@ -1,8 +1,8 @@
 # Rails Engine README
 
 ## Contributors
-* Matt Campbell[https://github.com/matthewecampbell]
-* Angela Lindw[https://github.com/allindow]
+* [Matt Campbell](https://github.com/matthewecampbell)
+* [Angela Lindow](https://github.com/allindow)
 
 ## About
 Rails Engine is an API built to simulate business analytics.  The database (postgres) stores customers, merchants, items, invoices, invoice items and transactions.  You can send requests to different endpoints to receive different sets of data.  For example, you could sent a GET request to:
@@ -60,7 +60,11 @@ Run the test suite using Rspec.
 rspec
 ```
 You can also run the spec harness privded by @turingschool by switching into the spec harness directory from the project root directory
-```cd rales_engine_spec_harness```
+```
+cd rales_engine_spec_harness
+```
 and running
-```rake```
+```
+rake
+```
 
