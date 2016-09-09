@@ -71,4 +71,14 @@ RSpec.describe Merchant, type: :model do
 
     expect(merchant.favorite_customer).to eq(cust1)
   end
+
+  it "can return the revenue for a merchant on a date" do
+    merch = create(:merchant)
+    invoice = create(:invoice, merchant: merch, created_at: "2016-03-20 23:57:05 UTC" )
+    item = create(:item, merchant: merch, unit_price: 500)
+    create(:invoice_item, quantity: 2, invoice: invoice, item: item, unit_price: 500)
+    create(:transaction, invoice: invoice)
+
+    expect(Merchant.revenue_date(merch.id, "2016-03-20 23:57:05 UTC")).to eq(1000)
+  end
 end
