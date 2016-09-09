@@ -68,4 +68,4 @@ and running
 rake
 ```
 
-#### All available endpoints can be found in the '''config/routes.rb``` or the original project spec for [Rails Engine](https://github.com/turingschool/lesson_plans/blob/master/ruby_03-professional_rails_applications/rails_engine.md).
+#### All available endpoints can be found in the ```config/routes.rb``` or the original project spec for [Rails Engine](https://github.com/turingschool/lesson_plans/blob/master/ruby_03-professional_rails_applications/rails_engine.md).
